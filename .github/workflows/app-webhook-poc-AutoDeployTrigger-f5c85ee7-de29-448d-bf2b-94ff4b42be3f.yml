@@ -41,4 +41,7 @@ jobs:
             az containerapp update \
               --name app-webhook-poc \
               --resource-group rg-webhook-poc \
-              --image acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest
+              --image acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest \
+              --registry-server acrwebhookpoc2026.azurecr.io \
+              --registry-username ${{ secrets.APPWEBHOOKPOC_REGISTRY_USERNAME }} \
+              --registry-password ${{ secrets.APPWEBHOOKPOC_REGISTRY_PASSWORD }}

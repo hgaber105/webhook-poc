@@ -29,11 +29,13 @@ jobs:
           push: true
           tags: acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest
 
-      - name: Azure CLI script
-        uses: azure/CLI@v1
+      - name: Update Container App
+        uses: azure/container-apps-deploy-action@v2
         with:
-          inlineScript: |
-            az containerapp update \
-              --name app-webhook-poc \
-              --resource-group rg-webhook-poc \
-              --image acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest
+          appSourcePath: ${{ github.workspace }}
+          acrName: acrwebhookpoc2026
+          containerAppName: app-webhook-poc
+          resourceGroup: rg-webhook-poc
+          imageToBuild: acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest
+          registryUsername: ${{ secrets.APPWEBHOOKPOC_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.APPWEBHOOKPOC_REGISTRY_PASSWORD }}

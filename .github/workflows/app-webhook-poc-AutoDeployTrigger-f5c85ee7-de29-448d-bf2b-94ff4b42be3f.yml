@@ -34,14 +34,20 @@ jobs:
           push: true
           tags: acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest
 
-      - name: Update Container App using Azure CLI
+      - name: Update Container App and Registry Settings
         uses: azure/CLI@v1
         with:
           inlineScript: |
+            echo "Setting container app registry credentials..."
+            az containerapp registry set \
+              --name app-webhook-poc \
+              --resource-group rg-webhook-poc \
+              --server acrwebhookpoc2026.azurecr.io \
+              --username ${{ secrets.APPWEBHOOKPOC_REGISTRY_USERNAME }} \
+              --password ${{ secrets.APPWEBHOOKPOC_REGISTRY_PASSWORD }}
+
+            echo "Updating container app image..."
             az containerapp update \
               --name app-webhook-poc \
               --resource-group rg-webhook-poc \
-              --image acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest \
-              --registry-server acrwebhookpoc2026.azurecr.io \
-              --registry-username ${{ secrets.APPWEBHOOKPOC_REGISTRY_USERNAME }} \
-              --registry-password ${{ secrets.APPWEBHOOKPOC_REGISTRY_PASSWORD }}
+              --image acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest

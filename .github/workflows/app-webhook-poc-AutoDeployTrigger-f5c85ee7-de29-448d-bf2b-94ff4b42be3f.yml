@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout to the branch
-        uses: actions/checkout@v2
-
       - name: Azure login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
 
       - name: Log in to container registry
         uses: azure/docker-login@v1
@@ -42,3 +42,5 @@ jobs:
           containerAppName: app-webhook-poc
           resourceGroup: rg-webhook-poc
           imageToBuild: acrwebhookpoc2026.azurecr.io/app-webhook-poc:latest
+          registryUsername: ${{ secrets.APPWEBHOOKPOC_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.APPWEBHOOKPOC_REGISTRY_PASSWORD }}
